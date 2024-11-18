@@ -1,0 +1,12 @@
+<div class="signup-container">
+  <h2>Sign Up</h2>
+  <input type="text" [(ngModel)]="username" placeholder="Username" />
+  <input type="password" [(ngModel)]="password" placeholder="Password" />
+  <input
+    type="password"
+    [(ngModel)]="confirmPassword"
+    placeholder="Confirm Password"
+  />
+  <button (click)="createAccount()">Create Account</button>
+  <p>{{ message }}</p>
+</div>
