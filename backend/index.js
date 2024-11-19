@@ -9,7 +9,7 @@ app.use(cors());
 
 // MySQL Connection
 const db = mysql.createConnection({
-  host: "localhost",
+  host: "noip-dynamic.zapto.org",
   user: "root",
   password: "password",
   database: "movie_recommendation_app",
@@ -91,12 +91,10 @@ app.post("/users", (req, res) => {
         res.status(500).send({ message: "Error creating user." });
       }
     } else {
-      res
-        .status(201)
-        .send({
-          message: "User created successfully.",
-          userId: results.insertId,
-        });
+      res.status(201).send({
+        message: "User created successfully.",
+        userId: results.insertId,
+      });
     }
   });
 });
