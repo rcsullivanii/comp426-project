@@ -102,6 +102,7 @@ db.connect((err) => {
   **/
 
 // Authenticate user
+// In your Express backend
 app.post("/login", (req, res) => {
   const { username, password } = req.body;
   const query = "SELECT * FROM users WHERE username = ? AND password = ?";
@@ -109,7 +110,9 @@ app.post("/login", (req, res) => {
     if (err) {
       res.status(500).send({ message: "Error querying database." });
     } else if (results.length > 0) {
-      res.status(200).send({ message: "Login successful.", user: results[0] });
+      res
+        .status(200)
+        .send({ message: "Login successful.", userId: results[0].id });
     } else {
       res.status(401).send({ message: "Invalid credentials." });
     }
