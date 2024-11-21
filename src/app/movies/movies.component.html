@@ -1,6 +1,22 @@
+<!-- movies.component.html -->
 <div class="movies-container">
   <h2>Your Movies</h2>
-  <ul>
+
+  <!-- Display error message if any -->
+  <div *ngIf="errorMessage" class="error">
+    {{ errorMessage }}
+  </div>
+
+  <!-- Display loading indicator -->
+  <div *ngIf="isLoading && !errorMessage">Loading movies...</div>
+
+  <!-- Display list of movies -->
+  <ul *ngIf="!isLoading && movies.length > 0">
     <li *ngFor="let movie of movies">{{ movie }}</li>
   </ul>
+
+  <!-- Display message if no movies are found -->
+  <div *ngIf="!isLoading && movies.length === 0 && !errorMessage">
+    No movies found.
+  </div>
 </div>

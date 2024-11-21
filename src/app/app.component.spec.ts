@@ -14,10 +14,10 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have the 'comp426-project' title`, () => {
+  it(`should have the 'Flick Finder' title`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('comp426-project');
+    expect(app.title).toEqual('Flick Finder');
   });
 
   it('should render title', () => {
