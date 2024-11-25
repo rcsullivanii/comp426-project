@@ -1,1 +1,32 @@
-/* You can add global styles to this file, and also import other style files */
+/* Default Light Mode */
+:root {
+    --bg-color: #ffffff;
+    --text-color: #000000;
+    --input-bg: #f0f0f0;
+    --input-border: #ccc;
+    --button-bg: #007bff;
+    --button-hover-bg: #0056b3;
+    --secondary-button-bg: #6c757d;
+    --secondary-button-hover-bg: #5a6268;
+    --container-bg-color: #eaeaea; /* Slightly darker than --bg-color */
+  }
+  
+  /* Dark Mode */
+  body.dark-mode {
+    --bg-color: #121212;
+    --text-color: #ffffff;
+    --input-bg: #2c2c2c;
+    --input-border: #444;
+    --button-bg: #1e90ff;
+    --button-hover-bg: #4682b4;
+    --secondary-button-bg: #5a5a5a;
+    --secondary-button-hover-bg: #444;
+    --container-bg-color: #1a1a1a; /* Slightly lighter than --bg-color */
+  }
+  
+  /* Apply Theme Variables */
+  body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+  }
+  

@@ -1,0 +1,64 @@
+.signup-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: var(--bg-color); /* Dynamic background color */
+    font-family: 'Arial', sans-serif;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .signup-container h2 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    color: var(--text-color); /* Dynamic text color */
+  }
+  
+  .signup-container input {
+    width: 80%;
+    max-width: 400px;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid var(--input-border); /* Dynamic input border */
+    background-color: var(--input-bg); /* Dynamic input background */
+    border-radius: 5px;
+    font-size: 1rem;
+  }
+  
+  .signup-container button {
+    width: 80%;
+    max-width: 400px;
+    padding: 10px;
+    margin: 10px 0;
+    font-size: 1rem;
+    color: var(--text-color); /* Dynamic text color for button */
+    background-color: var(--button-bg); /* Dynamic button background */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .signup-container button:hover {
+    background-color: var(--button-hover-bg); /* Dynamic button hover */
+  }
+  
+  .signup-container p {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    color: #e74c3c; /* Static error color; change if needed */
+    text-align: center;
+  }
+  
+  @media (max-width: 768px) {
+    .signup-container input,
+    .signup-container button {
+      width: 90%;
+    }
+  
+    .signup-container h2 {
+      font-size: 1.5rem;
+    }
+  }
+  
