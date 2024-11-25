@@ -1,0 +1,54 @@
+.movies-container {
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: var(--container-bg-color); /* Slightly different background */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px var(--box-shadow-color); /* Dynamic shadow */
+    font-family: 'Arial', sans-serif;
+  }
+  
+  .movies-container h2 {
+    font-size: 2rem;
+    color: var(--text-color); /* Dynamic text color */
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .movies-container ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .movies-container li {
+    background-color: var(--card-bg-color); /* Dynamic list item background */
+    margin: 10px 0;
+    padding: 15px;
+    border-radius: 5px;
+    font-size: 1.2rem;
+    color: var(--text-color-secondary); /* Dynamic text color for list items */
+    box-shadow: 0 2px 4px var(--box-shadow-color); /* Dynamic shadow */
+    transition: transform 0.2s ease, background-color 0.2s ease;
+  }
+  
+  .movies-container li:hover {
+    background-color: var(--card-hover-bg-color); /* Dynamic hover background */
+    transform: scale(1.02);
+  }
+  
+  @media (max-width: 768px) {
+    .movies-container {
+      padding: 15px;
+    }
+  
+    .movies-container h2 {
+      font-size: 1.5rem;
+    }
+  
+    .movies-container li {
+      font-size: 1rem;
+      padding: 10px;
+    }
+  }
+  
