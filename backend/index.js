@@ -61,7 +61,11 @@ app.post("/login", async (req, res) => {
 
     // Don't send password back to client
     const { password: _, ...userWithoutPassword } = user;
-    res.status(200).json({ message: "Login successful", user: userWithoutPassword });
+    res.status(200).json({ 
+      message: "Login successful", 
+      user: userWithoutPassword,
+      userId: user.id  
+    });
   } catch (error) {
     console.error("Login error:", error);
     res.status(500).json({ message: "Internal server error" });
@@ -183,6 +187,61 @@ app.get("/movies", async (req, res) => {
   } catch (error) {
       console.error("Error fetching movies:", error);
       res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+app.post("/user/:id/movies", async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const { movieId, movieDetails } = req.body;
+
+    // Check if movie exists 
+    let [existingMovie] = await pool.promise().query(
+      "SELECT id FROM movies WHERE tmdb_id = ?",
+      [movieId]
+    );
+
+    let dbMovieId;
+    if (existingMovie.length === 0) {
+      // Insert new movie
+      const [result] = await pool.promise().query(
+        `INSERT INTO movies (tmdb_id, title, overview, poster_path, vote_average) 
+         VALUES (?, ?, ?, ?, ?)`,
+        [movieId, movieDetails.title, movieDetails.overview, 
+         movieDetails.poster_path, movieDetails.vote_average]
+      );
+      dbMovieId = result.insertId;
+    } else {
+      dbMovieId = existingMovie[0].id;
+    }
+
+    // Add to user's list
+    await pool.promise().query(
+      "INSERT INTO user_movies (user_id, movie_id) VALUES (?, ?)",
+      [userId, dbMovieId]
+    );
+
+    res.status(201).json({ message: "Movie added successfully" });
+  } catch (error) {
+    console.error("Error adding movie:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+app.post("/user/:id/mood", async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const { mood } = req.body;
+    
+    await pool.promise().query(
+      "INSERT INTO user_moods (user_id, mood) VALUES (?, ?)",
+      [userId, mood]
+    );
+    
+    res.status(201).json({ message: "Mood recorded successfully" });
+  } catch (error) {
+    console.error("Error recording mood:", error);
+    res.status(500).json({ message: "Internal server error" });
   }
 });
 
