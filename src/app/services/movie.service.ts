@@ -17,6 +17,16 @@ export interface MovieResponse {
   total_results: number;
 }
 
+export interface MovieData {
+    movieId: number;
+    movieDetails: {
+      title: string;
+      overview: string;
+      poster_path: string;
+      vote_average: number;
+    };
+  }
+
 @Injectable({
   providedIn: 'root'
 })
@@ -79,15 +89,7 @@ export class MovieService {
     );
   }
 
-  addMovieToUserList(userId: number, movie: Movie): Observable<any> {
-    return this.http.post(`${this.backendUrl}/user/${userId}/movies`, {
-      movieId: movie.id,
-      movieDetails: {
-        title: movie.title,
-        overview: movie.overview,
-        poster_path: movie.poster_path,
-        vote_average: movie.vote_average
-      }
-    });
+  addMovieToUserList(userId: number, movieData: MovieData): Observable<any> {
+    return this.http.post(`${this.backendUrl}/user/${userId}/movies`, movieData);
   }
 }
