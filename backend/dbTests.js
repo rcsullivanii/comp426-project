@@ -6,40 +6,65 @@ const API_URL = 'http://localhost:3000';
 
 // Test database setup
 async function setupTestDatabase() {
-    const connection = await mysql.createConnection({
-        host: process.env.DB_HOST || 'localhost',
-        user: process.env.DB_USER || 'root',
-        password: process.env.DB_PASSWORD,
-        multipleStatements: true
-    });
-
+    let connection;
     try {
-        // Create database 
+        console.log('Attempting to connect to MySQL...');
+        console.log('Using host:', process.env.DB_HOST || 'localhost');
+        console.log('Using user:', process.env.DB_USER || 'root');
+        
+        connection = await mysql.createConnection({
+            host: process.env.DB_HOST || 'localhost',
+            user: process.env.DB_USER || 'root',
+            password: process.env.DB_PASSWORD,
+            multipleStatements: true
+        });
+
+        console.log('Successfully connected to MySQL');
+
+        // Create database
+        console.log('Creating database if it doesn\'t exist...');
         await connection.query(`
             CREATE DATABASE IF NOT EXISTS movie_recommendation_app;
-            USE movie_recommendation_app;
         `);
+        
+        console.log('Switching to movie_recommendation_app database...');
+        await connection.query(`USE movie_recommendation_app;`);
 
+        console.log('Creating tables...');
         // Create tables 
         await connection.query(`
             CREATE TABLE IF NOT EXISTS users (
                 id INT AUTO_INCREMENT PRIMARY KEY,
                 username VARCHAR(255) NOT NULL UNIQUE,
-                password VARCHAR(255) NOT NULL
+                password VARCHAR(255) NOT NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             );
 
             CREATE TABLE IF NOT EXISTS movies (
                 id INT AUTO_INCREMENT PRIMARY KEY,
-                title VARCHAR(255) NOT NULL UNIQUE
+                tmdb_id INT UNIQUE,
+                title VARCHAR(255) NOT NULL,
+                overview TEXT,
+                poster_path VARCHAR(255),
+                vote_average DECIMAL(3,1),
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             );
 
-            DROP TABLE IF EXISTS user_movies;
-            CREATE TABLE user_movies (
+            CREATE TABLE IF NOT EXISTS user_movies (
                 user_id INT NOT NULL,
                 movie_id INT NOT NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 PRIMARY KEY (user_id, movie_id),
                 FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
                 FOREIGN KEY (movie_id) REFERENCES movies(id) ON DELETE CASCADE
+            );
+
+            CREATE TABLE IF NOT EXISTS user_moods (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                user_id INT NOT NULL,
+                mood VARCHAR(50) NOT NULL,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
             );
         `);
 
@@ -47,17 +72,18 @@ async function setupTestDatabase() {
         console.log('Clearing existing test data...');
         await connection.query(`
             DELETE FROM user_movies;
+            DELETE FROM user_moods;
             DELETE FROM users WHERE username LIKE 'testuser%';
             DELETE FROM movies;
         `);
 
         // Insert test movies
         console.log('Inserting test movies...');
-        const [movieResult] = await connection.query(`
-            INSERT INTO movies (title) VALUES 
-                ('The Shawshank Redemption'),
-                ('The Godfather'),
-                ('The Dark Knight');
+        await connection.query(`
+            INSERT INTO movies (title, tmdb_id) VALUES 
+                ('The Shawshank Redemption', 278),
+                ('The Godfather', 238),
+                ('The Dark Knight', 155);
         `);
 
         // Verify movies inserted
@@ -67,10 +93,17 @@ async function setupTestDatabase() {
         console.log('Database setup completed successfully');
         return true;
     } catch (error) {
-        console.error('Database setup error:', error);
+        console.error('Detailed database setup error:', error);
+        if (error.code === 'ER_ACCESS_DENIED_ERROR') {
+            console.error('Access denied. Please check your MySQL username and password in .env file');
+        } else if (error.code === 'ECONNREFUSED') {
+            console.error('Connection refused. Please check if MySQL is running');
+        }
         return false;
     } finally {
-        await connection.end();
+        if (connection) {
+            await connection.end();
+        }
     }
 }
 
