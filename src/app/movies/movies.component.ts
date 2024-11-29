@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
-import { MovieService, Movie } from '../services/movie.service';
+import { MovieService, Movie, MovieData } from '../services/movie.service';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -83,7 +83,17 @@ export class MoviesComponent implements OnInit {
 
   addToMyList(movie: Movie): void {
     if (this.userId) {
-      this.movieService.addMovieToUserList(this.userId, movie).subscribe({
+      const movieData: MovieData = {
+        movieId: movie.id,
+        movieDetails: {
+          title: movie.title,
+          overview: movie.overview,
+          poster_path: movie.poster_path,
+          vote_average: movie.vote_average
+        }
+      };
+
+      this.movieService.addMovieToUserList(this.userId, movieData).subscribe({
         next: () => {
           this.fetchUserMovies(this.userId!);
         },
@@ -93,4 +103,6 @@ export class MoviesComponent implements OnInit {
       });
     }
   }
+  
 }
+
