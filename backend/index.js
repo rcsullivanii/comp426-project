@@ -237,4 +237,4 @@ process.on('SIGTERM', () => {
     | user_id  | int  | NO   | PRI | NULL    |       |
     | movie_id | int  | NO   | PRI | NULL    |       |
     +----------+------+------+-----+---------+-------+
-
+**/
