@@ -31,7 +31,6 @@ async function setupTestDatabase() {
         await connection.query(`USE movie_recommendation_app;`);
 
         console.log('Creating tables...');
-        // Create tables 
         await connection.query(`
             CREATE TABLE IF NOT EXISTS users (
                 id INT AUTO_INCREMENT PRIMARY KEY,
@@ -40,9 +39,12 @@ async function setupTestDatabase() {
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             );
 
-            CREATE TABLE IF NOT EXISTS movies (
+            DROP TABLE IF EXISTS user_movies;
+            DROP TABLE IF EXISTS movies;
+
+            CREATE TABLE movies (
                 id INT AUTO_INCREMENT PRIMARY KEY,
-                tmdb_id INT UNIQUE,
+                tmdb_id INT UNIQUE,  # Make sure tmdb_id is correctly spelled
                 title VARCHAR(255) NOT NULL,
                 overview TEXT,
                 poster_path VARCHAR(255),
@@ -50,7 +52,7 @@ async function setupTestDatabase() {
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             );
 
-            CREATE TABLE IF NOT EXISTS user_movies (
+            CREATE TABLE user_movies (
                 user_id INT NOT NULL,
                 movie_id INT NOT NULL,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -80,10 +82,10 @@ async function setupTestDatabase() {
         // Insert test movies
         console.log('Inserting test movies...');
         await connection.query(`
-            INSERT INTO movies (title, tmdb_id) VALUES 
-                ('The Shawshank Redemption', 278),
-                ('The Godfather', 238),
-                ('The Dark Knight', 155);
+            INSERT INTO movies (title, tmdb_id, overview, poster_path, vote_average) VALUES 
+                ('The Shawshank Redemption', 278, 'Two imprisoned men bond over a number of years.', '/path/to/poster1.jpg', 9.3),
+                ('The Godfather', 238, 'The aging patriarch of an organized crime dynasty.', '/path/to/poster2.jpg', 9.2),
+                ('The Dark Knight', 155, 'Batman raises the stakes in his war on crime.', '/path/to/poster3.jpg', 9.0);
         `);
 
         // Verify movies inserted
