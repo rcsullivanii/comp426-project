@@ -84,9 +84,59 @@ out/
 *.key
 *.crt
 
+
+
+# Angular specific files
+.angular/
+dist/
+tmp/
+app/**/*.js
+app/**/*.js.map
+
+# Angular environment files
+src/environments/*.ts
+!src/environments/environment.example.ts
+
+# Angular cache and compilation files
+.sass-cache/
+connect.lock
+libpeerconnection.log
+testem.log
+typings/
+
+# Angular e2e
+e2e/*.js
+e2e/*.map
+
+# Angular CLI configuration
+angular.json
+.editorconfig
+
+# Compiled output
+dist/
+tmp/
+out-tsc/
+bazel-out/
+
+# Visual Studio Code specific files
+.history/*
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/*
+
+# Miscellaneous Angular files
+.angular/cache/
+.angular/config.json
+*.launch
+.settings/
+=======
 # Local angular cache
 
 .angular/cache/
 
 # Node dependencies
 node_modules/
+
