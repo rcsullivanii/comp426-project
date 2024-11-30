@@ -143,9 +143,18 @@ async function testAPI() {
 
         // Test adding movie to user's list
         console.log('\n5. Testing adding movie to user...');
+        const movieToAdd = moviesResponse.data[0]; // Get the first movie
         const addMovieResponse = await axios.post(
             `${API_URL}/user/${userId}/movies`,
-            { movieId: moviesResponse.data[0].id }
+            {
+                movieId: movieToAdd.tmdb_id,
+                movieDetails: {
+                    title: movieToAdd.title,
+                    overview: movieToAdd.overview || '',
+                    poster_path: movieToAdd.poster_path || '',
+                    vote_average: movieToAdd.vote_average || 0
+                }
+            }
         );
         console.log('Movie added:', addMovieResponse.data);
 
