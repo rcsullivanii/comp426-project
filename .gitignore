@@ -85,6 +85,7 @@ out/
 *.crt
 
 
+
 # Angular specific files
 .angular/
 dist/
@@ -131,3 +132,11 @@ bazel-out/
 .angular/config.json
 *.launch
 .settings/
+=======
+# Local angular cache
+
+.angular/cache/
+
+# Node dependencies
+node_modules/
+
