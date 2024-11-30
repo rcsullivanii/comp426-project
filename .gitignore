@@ -83,3 +83,10 @@ out/
 *.pem
 *.key
 *.crt
+
+# Local angular cache
+
+.angular/cache/
+
+# Node dependencies
+node_modules/
