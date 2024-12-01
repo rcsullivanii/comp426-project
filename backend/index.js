@@ -124,7 +124,12 @@ app.get("/user/:id/movies", async (req, res) => {
   try {
     const userId = req.params.id;
     const [movies] = await pool.promise().query(`
-      SELECT movies.id, movies.title
+      SELECT 
+        movies.id, 
+        movies.title,
+        movies.overview,
+        movies.poster_path,
+        movies.vote_average
       FROM movies
       JOIN user_movies ON movies.id = user_movies.movie_id
       WHERE user_movies.user_id = ?
@@ -136,7 +141,6 @@ app.get("/user/:id/movies", async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 });
-
 
 // Get all movies
 app.get("/movies", async (req, res) => {
