@@ -206,6 +206,27 @@ app.post("/user/:id/movies", async (req, res) => {
   }
 });
 
+app.delete("/user/:userId/movies/:movieId", async (req, res) => {
+  try {
+    const { userId, movieId } = req.params;
+
+    // Delete the movie from the user's list
+    const [result] = await pool.promise().query(
+      "DELETE FROM user_movies WHERE user_id = ? AND movie_id = ?",
+      [userId, movieId]
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: "Movie not found in user's list" });
+    }
+
+    res.status(200).json({ message: "Movie removed successfully" });
+  } catch (error) {
+    console.error("Error removing movie:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
 app.post("/user/:id/mood", async (req, res) => {
   try {
     const userId = req.params.id;

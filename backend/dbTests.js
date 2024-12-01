@@ -167,6 +167,28 @@ async function testAPI() {
         );
         console.log('User movies:', userMoviesResponse.data);
 
+        const movieId = 1;
+
+        // Test deleting a movie from the user's list
+        console.log('\n6. Testing delete movie from user...');
+        const deleteResponse = await axios.delete(`${API_URL}/user/${userId}/movies/${movieId}`);
+        console.log('Movie deleted:', deleteResponse.data);
+
+        // Verify the movie was deleted
+        const updatedUserMoviesResponse = await axios.get(`${API_URL}/user/${userId}/movies`);
+        const updatedMovies = updatedUserMoviesResponse.data;
+        console.log('Updated user movies list:', updatedMovies);
+
+        // Check if the movie is still in the list
+        const movieStillExists = updatedMovies.some(movie => movie.id === movieId);
+        if (movieStillExists) {
+            console.error("Test failed: Movie was not deleted.");
+        } else {
+            console.log("Test passed: Movie successfully deleted.");
+        }
+
+
+
         console.log('\n=== All tests completed successfully ===');
     } catch (error) {
         console.error('\nTest failed:', {

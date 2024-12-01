@@ -13,7 +13,7 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./movies.component.css'],
 })
 export class MoviesComponent implements OnInit {
-  movies: string[] = [];
+  movies: { id: number, title: string }[] = [];
   userId: number | null = null;
   errorMessage: string = '';
   isLoading: boolean = true;
@@ -43,9 +43,9 @@ export class MoviesComponent implements OnInit {
 
   fetchUserMovies(userId: number): void {
     const apiUrl = `http://localhost:3000/user/${userId}/movies`;
-    this.http.get<{ title: string }[]>(apiUrl).subscribe({
+    this.http.get<{ id: number, title: string}[]>(apiUrl).subscribe({
       next: (data) => {
-        this.movies = data.map((movie) => movie.title);
+        this.movies = data;
         this.isLoading = false;
       },
       error: (error) => {
@@ -102,6 +102,23 @@ export class MoviesComponent implements OnInit {
         }
       });
     }
+  }
+
+  deleteMovie(movieId: number) {
+    this.isLoading = true;
+    this.errorMessage = '';
+  
+    this.http.delete(`http://localhost:3000/user/${this.userId}/movies/${movieId}`)
+      .subscribe({
+        next: () => {
+          this.fetchUserMovies(this.userId!);
+        },
+        error: (error) => {
+          console.error("Error deleting movie:", error);
+          this.errorMessage = "Failed to delete movie.";
+          this.isLoading = false;
+        }
+      });
   }
   
 }
