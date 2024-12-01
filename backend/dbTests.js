@@ -68,6 +68,21 @@ async function setupTestDatabase() {
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
             );
+
+            CREATE TABLE IF NOT EXISTS deletion_logs (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                user_id INT NOT NULL,
+                movie_id INT NOT NULL,
+                deleted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            );
+
+            CREATE TRIGGER after_movie_delete
+            AFTER DELETE ON user_movies
+            FOR EACH ROW
+            BEGIN
+                INSERT INTO deletion_logs (user_id, movie_id, deleted_at)
+                VALUES (OLD.user_id, OLD.movie_id, NOW());
+            END;
         `);
 
         // Clear existing test data
