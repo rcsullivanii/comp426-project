@@ -1,117 +1,208 @@
-.movies-container {
-    padding: 20px;
-    max-width: 800px;
-    margin: 0 auto;
-    background-color: var(--container-bg-color); /* Slightly different background */
-    border-radius: 8px;
-    box-shadow: 0 4px 8px var(--box-shadow-color); /* Dynamic shadow */
-    font-family: 'Arial', sans-serif;
-  }
-  
-  .movies-container h2 {
-    font-size: 2rem;
-    color: var(--text-color); /* Dynamic text color */
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
-  .movies-container ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-  
-  .movies-container li {
-    background-color: var(--card-bg-color); /* Dynamic list item background */
-    margin: 10px 0;
-    padding: 15px;
-    border-radius: 5px;
-    font-size: 1.2rem;
-    color: var(--text-color-secondary); /* Dynamic text color for list items */
-    box-shadow: 0 2px 4px var(--box-shadow-color); /* Dynamic shadow */
-    transition: transform 0.2s ease, background-color 0.2s ease;
-  }
-  
-  .movies-container li:hover {
-    background-color: var(--card-hover-bg-color); /* Dynamic hover background */
-    transform: scale(1.02);
-  }
+.page-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
 
-  .movie-details {
-    margin-bottom: 15px; /* Added space between each movie detail */
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
+.header-section {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 20px;
+}
 
+.movie-section {
+  margin-bottom: 40px;
+}
 
-  .delete-button {
-    background-color: #ff4d4d;
-    color: white;
-    padding: 3px 10px;
-    border: none;
-    border-radius: 5px;
-    padding: 5px 10px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
+h2 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #333;
+}
 
-  .delete-button:hover {
-   background-color: #ff3333;
-  }
+.movie-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+  margin-top: 20px;
+}
 
-  
-  @media (max-width: 768px) {
-    .movies-container {
-      padding: 15px;
-    }
-  
-    .movies-container h2 {
-      font-size: 1.5rem;
-    }
-  
-    .movies-container li {
-      font-size: 1rem;
-      padding: 10px;
-    }
-  }
+.movie-card {
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  transition: transform 0.2s;
+}
+
+.movie-card:hover {
+  transform: translateY(-5px);
+}
+
+.movie-poster {
+  width: 100%;
+  height: 375px;
+  object-fit: cover;
+}
+
+.movie-info {
+  padding: 15px;
+}
+
+.movie-info h3 {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.rating {
+  color: #666;
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.overview {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 15px;
+  line-height: 1.4;
+}
+
+.mood-selector {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.mood-select {
+  flex-grow: 1;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 16px;
+}
+
+.recommendation-button {
+  background: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background 0.2s;
+}
+
+.recommendation-button:hover {
+  background: #45a049;
+}
+
+.recommendation-button:disabled {
+  background: #cccccc;
+  cursor: not-allowed;
+}
+
+.add-button, .delete-button, .update-password-button {
+  width: 100%;
+  padding: 8px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.2s;
+}
 
 .add-button {
-  background-color: lightgreen;
+  background: #4CAF50;
   color: white;
-  padding: 3px 10px;
-  border: none;
-  border-radius: 5px;
-  padding: 5px 10px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+}
+
+.add-button:hover {
+  background: #45a049;
+}
+
+.delete-button {
+  background: #f44336;
+  color: white;
+}
+
+.delete-button:hover {
+  background: #da190b;
 }
 
 .update-password-button {
-  background-color: #534dff;
+  background: #2196F3;
   color: white;
-  padding: 3px 10px;
-  border: none;
-  border-radius: 5px;
-  padding: 5px 10px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+  width: auto;
 }
 
-.recs select-mood {
-  flex-grow: 1;
-  padding: 8px;
-  border-radius: 5px;
-  border: 1px solid #ccc;
+.update-password-button:hover {
+  background: #1976D2;
 }
 
-.recs get-recommendations-button {
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  padding: 8px 16px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+.error-message {
+  background: #ffebee;
+  color: #c62828;
+  padding: 15px;
+  border-radius: 4px;
+  margin-bottom: 20px;
 }
+
+.loading, .empty-state {
+  text-align: center;
+  padding: 20px;
+  color: #666;
+}
+
+@media (max-width: 768px) {
+  .movie-grid {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
   
+  .mood-selector {
+    flex-direction: column;
+  }
+  
+  .movie-poster {
+    height: 300px;
+  }
+}
+
+.user-movie-card {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 10px;
+  gap: 15px;
+  height: 150px; /* Smaller height for user's movies */
+}
+
+.user-movie-poster {
+  width: 100px; 
+  height: 130px; 
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.user-movie-card .movie-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.user-movie-card h3 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.user-movie-card .delete-button {
+  width: auto;
+  margin-top: 10px;
+}
+
+.movie-section:first-of-type .movie-grid {
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+}
