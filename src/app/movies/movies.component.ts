@@ -13,8 +13,13 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./movies.component.css'],
 })
 export class MoviesComponent implements OnInit {
-  movies: { id: number, title: string }[] = [];
-  userId: number | null = null;
+  movies: {
+    id: number;
+    title: string;
+    poster_path?: string;
+    overview?: string;
+    vote_average?: number;
+  }[] = [];  userId: number | null = null;
   errorMessage: string = '';
   isLoading: boolean = true;
   recommendations: Movie[] = [];
@@ -24,7 +29,7 @@ export class MoviesComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute, 
-    private movieService: MovieService, 
+    public movieService: MovieService, 
     private http: HttpClient,
     private router: Router
   ) {}
@@ -44,7 +49,13 @@ export class MoviesComponent implements OnInit {
 
   fetchUserMovies(userId: number): void {
     const apiUrl = `http://localhost:3000/user/${userId}/movies`;
-    this.http.get<{ id: number, title: string}[]>(apiUrl).subscribe({
+    this.http.get<{
+      id: number;
+      title: string;
+      poster_path: string;
+      overview: string;
+      vote_average: number;
+    }[]>(apiUrl).subscribe({
       next: (data) => {
         this.movies = data;
         this.isLoading = false;
