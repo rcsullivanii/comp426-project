@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { MovieService, Movie, MovieData } from '../services/movie.service';
 import { FormsModule } from '@angular/forms';
@@ -25,7 +25,8 @@ export class MoviesComponent implements OnInit {
   constructor(
     private route: ActivatedRoute, 
     private movieService: MovieService, 
-    private http: HttpClient
+    private http: HttpClient,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -119,6 +120,10 @@ export class MoviesComponent implements OnInit {
           this.isLoading = false;
         }
       });
+  }
+
+  navigateToUpdatePassword(): void {
+    this.router.navigate(['/update-password'], { queryParams: { userId: this.userId } });
   }
   
 }

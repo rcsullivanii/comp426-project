@@ -202,6 +202,21 @@ async function testAPI() {
             console.log("Test passed: Movie successfully deleted.");
         }
 
+         // Test updating the user's password
+         console.log('\n8. Testing update user password...');
+         const updatePasswordResponse = await axios.put(`${API_URL}/user/${userId}/password`, {
+             newPassword: 'newpassword456'
+         });
+         console.log('Password updated:', updatePasswordResponse.data);
+ 
+         // Verify login with the new password
+         console.log('\n9. Testing login with updated password...');
+         const newLoginResponse = await axios.post(`${API_URL}/login`, {
+             username: testUser.username,
+             password: 'newpassword456'
+         });
+         console.log('Login with updated password successful:', newLoginResponse.data);
+
 
 
         console.log('\n=== All tests completed successfully ===');

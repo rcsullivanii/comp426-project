@@ -87,6 +87,17 @@
   transition: background-color 0.3s ease;
 }
 
+.update-password-button {
+  background-color: #534dff;
+  color: white;
+  padding: 3px 10px;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
 .recs select-mood {
   flex-grow: 1;
   padding: 8px;
