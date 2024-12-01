@@ -13,6 +13,8 @@ h1 {
   padding: 10px 0; 
 }
 button {
+  display: block;
+  margin: 10px auto 20px auto;
   background: linear-gradient(45deg, #ff9a8b, #fecfef, #f3eec3);
   border: none;
   border-radius: 25px;
