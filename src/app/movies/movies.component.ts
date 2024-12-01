@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { MovieService, Movie, MovieData } from '../services/movie.service';
 import { FormsModule } from '@angular/forms';
@@ -13,7 +13,7 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./movies.component.css'],
 })
 export class MoviesComponent implements OnInit {
-  movies: string[] = [];
+  movies: { id: number, title: string }[] = [];
   userId: number | null = null;
   errorMessage: string = '';
   isLoading: boolean = true;
@@ -25,7 +25,8 @@ export class MoviesComponent implements OnInit {
   constructor(
     private route: ActivatedRoute, 
     private movieService: MovieService, 
-    private http: HttpClient
+    private http: HttpClient,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -43,9 +44,9 @@ export class MoviesComponent implements OnInit {
 
   fetchUserMovies(userId: number): void {
     const apiUrl = `http://localhost:3000/user/${userId}/movies`;
-    this.http.get<{ title: string }[]>(apiUrl).subscribe({
+    this.http.get<{ id: number, title: string}[]>(apiUrl).subscribe({
       next: (data) => {
-        this.movies = data.map((movie) => movie.title);
+        this.movies = data;
         this.isLoading = false;
       },
       error: (error) => {
@@ -102,6 +103,27 @@ export class MoviesComponent implements OnInit {
         }
       });
     }
+  }
+
+  deleteMovie(movieId: number) {
+    this.isLoading = true;
+    this.errorMessage = '';
+  
+    this.http.delete(`http://localhost:3000/user/${this.userId}/movies/${movieId}`)
+      .subscribe({
+        next: () => {
+          this.fetchUserMovies(this.userId!);
+        },
+        error: (error) => {
+          console.error("Error deleting movie:", error);
+          this.errorMessage = "Failed to delete movie.";
+          this.isLoading = false;
+        }
+      });
+  }
+
+  navigateToUpdatePassword(): void {
+    this.router.navigate(['/update-password'], { queryParams: { userId: this.userId } });
   }
   
 }

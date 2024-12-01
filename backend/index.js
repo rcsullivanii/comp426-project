@@ -206,6 +206,27 @@ app.post("/user/:id/movies", async (req, res) => {
   }
 });
 
+app.delete("/user/:userId/movies/:movieId", async (req, res) => {
+  try {
+    const { userId, movieId } = req.params;
+
+    // Delete the movie from the user's list
+    const [result] = await pool.promise().query(
+      "DELETE FROM user_movies WHERE user_id = ? AND movie_id = ?",
+      [userId, movieId]
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: "Movie not found in user's list" });
+    }
+
+    res.status(200).json({ message: "Movie removed successfully" });
+  } catch (error) {
+    console.error("Error removing movie:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
 app.post("/user/:id/mood", async (req, res) => {
   try {
     const userId = req.params.id;
@@ -222,6 +243,42 @@ app.post("/user/:id/mood", async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 });
+
+
+app.put("/user/:id/password", async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const { newPassword } = req.body;
+
+    // Validate input
+    if (!newPassword) {
+      return res.status(400).json({ message: "New password is required" });
+    }
+
+    if (newPassword.length < 8) {
+      return res.status(400).json({ message: "Password must be at least 8 characters long" });
+    }
+
+    // Hash the new password
+    const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+
+    // Update the password in the database
+    const [result] = await pool.promise().query(
+      "UPDATE users SET password = ? WHERE id = ?",
+      [hashedNewPassword, userId]
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json({ message: "Password updated successfully" });
+  } catch (error) {
+    console.error("Error updating password:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {

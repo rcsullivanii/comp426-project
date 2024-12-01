@@ -68,6 +68,21 @@ async function setupTestDatabase() {
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
             );
+
+            CREATE TABLE IF NOT EXISTS deletion_logs (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                user_id INT NOT NULL,
+                movie_id INT NOT NULL,
+                deleted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            );
+
+            CREATE TRIGGER after_movie_delete
+            AFTER DELETE ON user_movies
+            FOR EACH ROW
+            BEGIN
+                INSERT INTO deletion_logs (user_id, movie_id, deleted_at)
+                VALUES (OLD.user_id, OLD.movie_id, NOW());
+            END;
         `);
 
         // Clear existing test data
@@ -166,6 +181,43 @@ async function testAPI() {
             `${API_URL}/user/${userId}/movies`
         );
         console.log('User movies:', userMoviesResponse.data);
+
+        const movieId = 1;
+
+        // Test deleting a movie from the user's list
+        console.log('\n6. Testing delete movie from user...');
+        const deleteResponse = await axios.delete(`${API_URL}/user/${userId}/movies/${movieId}`);
+        console.log('Movie deleted:', deleteResponse.data);
+
+        // Verify the movie was deleted
+        const updatedUserMoviesResponse = await axios.get(`${API_URL}/user/${userId}/movies`);
+        const updatedMovies = updatedUserMoviesResponse.data;
+        console.log('Updated user movies list:', updatedMovies);
+
+        // Check if the movie is still in the list
+        const movieStillExists = updatedMovies.some(movie => movie.id === movieId);
+        if (movieStillExists) {
+            console.error("Test failed: Movie was not deleted.");
+        } else {
+            console.log("Test passed: Movie successfully deleted.");
+        }
+
+         // Test updating the user's password
+         console.log('\n8. Testing update user password...');
+         const updatePasswordResponse = await axios.put(`${API_URL}/user/${userId}/password`, {
+             newPassword: 'newpassword456'
+         });
+         console.log('Password updated:', updatePasswordResponse.data);
+ 
+         // Verify login with the new password
+         console.log('\n9. Testing login with updated password...');
+         const newLoginResponse = await axios.post(`${API_URL}/login`, {
+             username: testUser.username,
+             password: 'newpassword456'
+         });
+         console.log('Login with updated password successful:', newLoginResponse.data);
+
+
 
         console.log('\n=== All tests completed successfully ===');
     } catch (error) {
