@@ -1,7 +1,30 @@
+:root {
+  --background-color: #ffffff;
+  --card-background: #ffffff;
+  --text-color: #333333;
+  --text-color-secondary: #666666;
+  --border-color: #dddddd;
+  --shadow-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Dark mode styles */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background-color: #1a1a1a;
+    --card-background: #2d2d2d;
+    --text-color: #ffffff;
+    --text-color-secondary: #cccccc;
+    --border-color: #404040;
+    --shadow-color: rgba(0, 0, 0, 0.3);
+  }
+}
+
 .page-container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
+  background-color: var(--background-color);
+  color: var(--text-color);
 }
 
 .header-section {
@@ -18,7 +41,7 @@ h2 {
   font-size: 24px;
   font-weight: bold;
   margin-bottom: 20px;
-  color: #333;
+  color: var(--text-color);
 }
 
 .movie-grid {
@@ -29,11 +52,12 @@ h2 {
 }
 
 .movie-card {
-  background: white;
+  background: var(--card-background);
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 8px var(--shadow-color);
   transition: transform 0.2s;
+  border: 1px solid var(--border-color);
 }
 
 .movie-card:hover {
@@ -48,23 +72,25 @@ h2 {
 
 .movie-info {
   padding: 15px;
+  color: var(--text-color);
 }
 
 .movie-info h3 {
   font-size: 18px;
   font-weight: bold;
   margin-bottom: 8px;
+  color: var(--text-color);
 }
 
 .rating {
-  color: #666;
+  color: var(--text-color-secondary);
   font-size: 14px;
   margin-bottom: 8px;
 }
 
 .overview {
   font-size: 14px;
-  color: #666;
+  color: var(--text-color-secondary);
   margin-bottom: 15px;
   line-height: 1.4;
 }
@@ -78,9 +104,11 @@ h2 {
 .mood-select {
   flex-grow: 1;
   padding: 10px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--border-color);
   border-radius: 6px;
   font-size: 16px;
+  background-color: var(--card-background);
+  color: var(--text-color);
 }
 
 .recommendation-button {
