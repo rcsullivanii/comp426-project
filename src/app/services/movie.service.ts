@@ -34,6 +34,7 @@ export class MovieService {
   private tmdbApiUrl = 'https://api.themoviedb.org/3';
   private apiKey = 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5N2I3MTAyM2I5OGJiMDY4MjE3ZWIxNzY1OTAzOGU2NCIsIm5iZiI6MTczMjkwODQ2OC40OTYsInN1YiI6IjY3NGExNWI0MDExNzg1MWNkMDFjMGE2YSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.WoIw_5fQONsvDN6U8ALKbpP9GRms8ibqzNq4tm_Z_6s'; 
   private backendUrl = 'http://localhost:3000';
+  private tmdbImageUrl = 'https://image.tmdb.org/t/p/w500';
 
   constructor(private http: HttpClient) {}
 
@@ -43,6 +44,14 @@ export class MovieService {
       'Authorization': `Bearer ${this.apiKey}`
     });
   }
+
+  getFullPosterPath(posterPath: string | null): string {
+    if (posterPath) {
+      return `${this.tmdbImageUrl}${posterPath}`;
+    }
+    return '/assets/no-poster.jpg';  // fallback image
+  }
+
 
   getPopularMovies(page: number = 1): Observable<MovieResponse> {
     return this.http.get<MovieResponse>(
