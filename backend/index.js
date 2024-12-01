@@ -123,13 +123,13 @@ app.get("/users", async (req, res) => {
 app.get("/user/:id/movies", async (req, res) => {
   try {
     const userId = req.params.id;
-    const [movies] = await pool.promise().query(`
-      SELECT movies.id, movies.title
-      FROM movies
-      JOIN user_movies ON movies.id = user_movies.movie_id
-      WHERE user_movies.user_id = ?
-    `, [userId]);
-    
+
+    // Call the stored procedure
+    const [result] = await pool.promise().query('CALL GetUserMovies(?)', [userId]);
+
+    // The result of a CALL query is nested in an array
+    const movies = result[0];
+
     res.status(200).json(movies);
   } catch (error) {
     console.error("Error fetching user movies:", error);
