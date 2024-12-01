@@ -36,6 +36,30 @@
     background-color: var(--card-hover-bg-color); /* Dynamic hover background */
     transform: scale(1.02);
   }
+
+  .movie-details {
+    margin-bottom: 15px; /* Added space between each movie detail */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+
+  .delete-button {
+    background-color: #ff4d4d;
+    color: white;
+    padding: 3px 10px;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .delete-button:hover {
+   background-color: #ff3333;
+  }
+
   
   @media (max-width: 768px) {
     .movies-container {
@@ -51,4 +75,15 @@
       padding: 10px;
     }
   }
+
+.add-button {
+  background-color: lightgreen;
+  color: white;
+  padding: 3px 10px;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
   
