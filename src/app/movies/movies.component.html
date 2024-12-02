@@ -1,33 +1,50 @@
-<div class="container mx-auto p-4">
-  <!-- User's Movie List Section -->
-  <div class="mb-8">
-    <h2 class="text-2xl font-bold mb-4">Your Movies</h2>
-    
-    <div *ngIf="errorMessage" class="bg-red-100 text-red-700 p-3 rounded mb-4">
-      {{ errorMessage }}
-    </div>
+<div class="page-container">
+  <!-- Header Section -->
+  <div class="header-section">
+    <button class="update-password-button" (click)="navigateToUpdatePassword()">
+      Update Password
+    </button>
+  </div>
 
-    <div *ngIf="isLoading && !errorMessage" class="text-gray-600">
-      Loading movies...
-    </div>
+<!-- User's Movie List Section -->
+<section class="movie-section">
+  <h2>Your Movies</h2>
+  
+  <div *ngIf="errorMessage" class="error-message">
+    {{ errorMessage }}
+  </div>
 
-    <div *ngIf="!isLoading && movies.length === 0 && !errorMessage" class="text-gray-600">
-      You haven't added any movies yet. Try adding some from the recommendations below!
-    </div>
+  <div *ngIf="isLoading && !errorMessage" class="loading">
+    Loading movies...
+  </div>
 
-    <div *ngIf="!isLoading && movies.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-      <div *ngFor="let movie of movies" class="bg-white p-4 rounded shadow">
-        {{ movie }}
+  <div *ngIf="!isLoading && movies.length === 0 && !errorMessage" class="empty-state">
+    You haven't added any movies yet. Try adding some from the recommendations below!
+  </div>
+
+  <div *ngIf="!isLoading && movies.length > 0" class="movie-grid">
+    <div *ngFor="let movie of movies" class="movie-card user-movie-card">
+      <img 
+        [src]="movie.poster_path ? movieService.getFullPosterPath(movie.poster_path) : '/assets/no-poster.jpg'" 
+        [alt]="movie.title" 
+        class="movie-poster user-movie-poster"
+      >
+      <div class="movie-info">
+        <h3>{{ movie.title }}</h3>
+        <button (click)="deleteMovie(movie.id)" class="delete-button">
+          Delete
+        </button>
       </div>
     </div>
   </div>
+</section>
 
-  <!-- Mood-based Recommendations Section -->
-  <div class="mb-8">
-    <h2 class="text-2xl font-bold mb-4">Get Movie Recommendations</h2>
+  <!-- Recommendations Section -->
+  <section class="movie-section">
+    <h2>Get Movie Recommendations</h2>
     
-    <div class="flex gap-4 mb-4">
-      <select [(ngModel)]="selectedMood" class="border p-2 rounded">
+    <div class="mood-selector">
+      <select [(ngModel)]="selectedMood" class="mood-select">
         <option value="">Select your mood</option>
         <option *ngFor="let mood of moods" [value]="mood.toLowerCase()">
           {{mood}}
@@ -37,40 +54,50 @@
       <button 
         (click)="getMoodBasedRecommendations()"
         [disabled]="!selectedMood"
-        class="bg-blue-500 text-white px-4 py-2 rounded disabled:bg-gray-300">
+        class="recommendation-button">
         Get Recommendations
       </button>
     </div>
 
-    <div *ngIf="recommendations.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-      <div *ngFor="let movie of recommendations" class="bg-white p-4 rounded shadow">
-        <h3 class="font-bold mb-2">{{ movie.title }}</h3>
-        <p class="text-sm text-gray-600 mb-2">Rating: {{ movie.vote_average }}/10</p>
-        <p class="text-sm mb-4">{{ movie.overview | slice:0:150 }}...</p>
-        <button 
-          (click)="addToMyList(movie)"
-          class="bg-green-500 text-white px-3 py-1 rounded text-sm">
-          Add to My List
-        </button>
+    <div *ngIf="recommendations.length > 0" class="movie-grid">
+      <div *ngFor="let movie of recommendations" class="movie-card">
+        <img 
+          [src]="movieService.getFullPosterPath(movie.poster_path)" 
+          [alt]="movie.title" 
+          class="movie-poster"
+        >
+        <div class="movie-info">
+          <h3>{{ movie.title }}</h3>
+          <div class="rating">Rating: {{ movie.vote_average }}/10</div>
+          <p class="overview">{{ movie.overview | slice:0:150 }}...</p>
+          <button (click)="addToMyList(movie)" class="add-button">
+            Add to My List
+          </button>
+        </div>
       </div>
     </div>
-  </div>
+  </section>
 
   <!-- Popular Movies Section -->
-  <div class="mb-8">
-    <h2 class="text-2xl font-bold mb-4">Popular Movies</h2>
+  <section class="movie-section">
+    <h2>Popular Movies</h2>
     
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-      <div *ngFor="let movie of popularMovies" class="bg-white p-4 rounded shadow">
-        <h3 class="font-bold mb-2">{{ movie.title }}</h3>
-        <p class="text-sm text-gray-600 mb-2">Rating: {{ movie.vote_average }}/10</p>
-        <p class="text-sm mb-4">{{ movie.overview | slice:0:150 }}...</p>
-        <button 
-          (click)="addToMyList(movie)"
-          class="bg-green-500 text-white px-3 py-1 rounded text-sm">
-          Add to My List
-        </button>
+    <div class="movie-grid">
+      <div *ngFor="let movie of popularMovies" class="movie-card">
+        <img 
+          [src]="movieService.getFullPosterPath(movie.poster_path)" 
+          [alt]="movie.title" 
+          class="movie-poster"
+        >
+        <div class="movie-info">
+          <h3>{{ movie.title }}</h3>
+          <div class="rating">Rating: {{ movie.vote_average }}/10</div>
+          <p class="overview">{{ movie.overview | slice:0:150 }}...</p>
+          <button (click)="addToMyList(movie)" class="add-button">
+            Add to My List
+          </button>
+        </div>
       </div>
     </div>
-  </div>
+  </section>
 </div>
