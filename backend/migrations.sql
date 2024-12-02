@@ -35,6 +35,26 @@ CREATE TABLE user_moods (
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
+DROP TIGGER IF EXISTS prevent_duplicate_user_movies;
+
+CREATE TRIGGER prevent_duplicate_user_movies
+BEFORE INSERT ON user_movies
+FOR EACH ROW
+BEGIN
+    DECLARE movie_count INT;
+    
+    -- Check if the user already has this movie in their list
+    SELECT COUNT(*) INTO movie_count
+    FROM user_movies
+    WHERE user_id = NEW.user_id AND movie_id = NEW.movie_id;
+    
+    -- If the movie is already in the user's list, raise an error
+    IF movie_count > 0 THEN
+        SIGNAL SQLSTATE '45000' 
+        SET MESSAGE_TEXT = 'Movie already exists in user list';
+    END IF;
+End;
+
 -- Restore data from backups
 INSERT INTO movies (title)
 SELECT title FROM movies_backup;
