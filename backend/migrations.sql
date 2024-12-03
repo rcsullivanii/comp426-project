@@ -6,7 +6,6 @@ CREATE TABLE IF NOT EXISTS user_movies_backup AS SELECT * FROM user_movies;
 DROP TABLE IF EXISTS user_movies;
 DROP TABLE IF EXISTS movies;
 
--- DATA VALIDATION
 CREATE TABLE movies (
     id INT AUTO_INCREMENT PRIMARY KEY,
     tmdb_id INT UNIQUE,
