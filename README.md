@@ -1,4 +1,4 @@
-# Comp426Project
+# FlickFinder
 
 This is an application that provides personalized movie recommendations based on the user's mood. Users can create an account, log in, and add movies to their personal watchlist, which persists across sessions. The app features both light and dark modes, with the user's preference saved even after refreshing the page. Built using Angular, the application delivers a seamless, user-friendly experience for discovering and managing movie recommendations.
 
