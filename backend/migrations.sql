@@ -6,6 +6,7 @@ CREATE TABLE IF NOT EXISTS user_movies_backup AS SELECT * FROM user_movies;
 DROP TABLE IF EXISTS user_movies;
 DROP TABLE IF EXISTS movies;
 
+-- DATA VALIDATION
 CREATE TABLE movies (
     id INT AUTO_INCREMENT PRIMARY KEY,
     tmdb_id INT UNIQUE,
@@ -35,7 +36,9 @@ CREATE TABLE user_moods (
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
-DROP TIGGER IF EXISTS prevent_duplicate_user_movies;
+DROP TRIGGER IF EXISTS prevent_duplicate_user_movies;
+
+DELIMITER //
 
 CREATE TRIGGER prevent_duplicate_user_movies
 BEFORE INSERT ON user_movies
@@ -53,7 +56,10 @@ BEGIN
         SIGNAL SQLSTATE '45000' 
         SET MESSAGE_TEXT = 'Movie already exists in user list';
     END IF;
-End;
+END;
+//
+
+DELIMITER ;
 
 -- Restore data from backups
 INSERT INTO movies (title)
